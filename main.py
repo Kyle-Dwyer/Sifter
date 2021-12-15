@@ -33,7 +33,7 @@ def rand(alpha):
 
 
 if __name__ == '__main__':
-    file_name = "/home/kagaya/work/cluster/data/preprocessed/2021-10-13_16-57-51.json"
+    file_name = "/home/kagaya/work/TraceCluster/data/preprocessed/trainticket/bert_2021-11-19_16-12-59.json"
     print("Reading...")
     traces = read_json(file_name)
     print(len(traces))
@@ -58,6 +58,7 @@ if __name__ == '__main__':
     # For picture
     loss_y = []
     alpha_y = []
+    count = 0
     for trace_id, trace in traces.items():
         print("id:{}".format(trace_id))
         # Get the slide windows of trace and split them into contexts + targets
@@ -66,6 +67,7 @@ if __name__ == '__main__':
         if len(data) == 0:
             # print(id)
             # print("==========================")
+            count += 1
             if rand(alpha):
                 ids.append(trace_id)
             print("==========================")
@@ -91,7 +93,12 @@ if __name__ == '__main__':
         loss_y.append(loss)
         alpha_y.append(alpha)
 
-    print(ids)
+    # print(ids)
+    print(count)
+    print(len(traces), len(ids)) #77321 644
+    import numpy as np
+    np.savetxt("./loss.txt", np.array(loss_y))
+    np.savetxt("./alpha.txt", np.array(alpha_y))
     # For picture
     # x = range(len(loss_y))
     # plt.plot(x, loss_y, label="loss")
